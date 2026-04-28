@@ -3,6 +3,31 @@ import { pool } from "../../config/db";
 import { success, error } from "../../utils/response";
 import { AccessGuard } from "../../services/accessGuard.service";
 
+export const deleteSalesOrder = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    // Check if sales order exists
+    const soResult = await pool.query("SELECT * FROM sales_orders WHERE id = $1", [id]);
+    if (soResult.rows.length === 0) return error(res, "Sales order not found", 404);
+
+    const so = soResult.rows[0];
+
+    // If the order was fulfilled and stock was decremented, restore it
+    const wasFulfilled = ['Shipped', 'Delivered', 'Fulfilled'].includes(so.status);
+    if (wasFulfilled && so.product_id && so.quantity) {
+      await pool.query("UPDATE products SET stock_quantity = stock_quantity + $1 WHERE id = $2", [so.quantity, so.product_id]);
+    }
+
+    // Delete related inventory movements
+    await pool.query("DELETE FROM inventory_movements WHERE reference_type = 'SALES_ORDER' AND reference_id::text = $1::text", [id]);
+    // Delete the sales order
+    await pool.query("DELETE FROM sales_orders WHERE id = $1", [id]);
+    return success(res, "Sales order deleted successfully");
+  } catch (err: any) {
+    return error(res, err.message, 500);
+  }
+};
+
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const result = await pool.query("SELECT * FROM products ORDER BY created_at DESC");

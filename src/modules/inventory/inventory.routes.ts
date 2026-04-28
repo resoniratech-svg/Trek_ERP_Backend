@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProducts, getMovements, getSalesOrders, getInventoryStats, createProduct, getProductById, updateProduct, deleteProduct, createSalesOrder, updateSalesOrderStatus, reorderProduct } from "./inventory.controller";
+import { getProducts, getMovements, getSalesOrders, getInventoryStats, createProduct, getProductById, updateProduct, deleteProduct, createSalesOrder, updateSalesOrderStatus, deleteSalesOrder, reorderProduct } from "./inventory.controller";
 import { authMiddleware } from "../../middleware/auth.middleware";
 import { checkRole } from "../../middleware/role.middleware";
 
@@ -15,6 +15,7 @@ router.post("/products", authMiddleware, checkRole(["SUPER_ADMIN", "ACCOUNTS"]),
 router.post("/sales-orders", authMiddleware, checkRole(["SUPER_ADMIN", "PROJECT_MANAGER"]), createSalesOrder);
 router.patch("/products/:id/reorder", authMiddleware, checkRole(["SUPER_ADMIN", "ACCOUNTS"]), reorderProduct);
 router.patch("/sales-orders/:id/status", authMiddleware, checkRole(["SUPER_ADMIN", "PROJECT_MANAGER"]), updateSalesOrderStatus);
+router.delete("/sales-orders/:id", authMiddleware, checkRole(["SUPER_ADMIN", "PROJECT_MANAGER"]), deleteSalesOrder);
 
 router.get("/movements", authMiddleware, getMovements);
 router.get("/sales-orders", authMiddleware, getSalesOrders);

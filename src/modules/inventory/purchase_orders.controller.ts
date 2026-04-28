@@ -86,8 +86,21 @@ export const updatePurchaseOrderStatus = async (req: Request, res: Response) => 
 export const deletePurchaseOrder = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const result = await pool.query("DELETE FROM purchase_orders WHERE id = $1 RETURNING id", [id]);
-    if (result.rowCount === 0) return error(res, "Purchase order not found", 404);
+    // Check if purchase order exists
+    const poResult = await pool.query("SELECT * FROM purchase_orders WHERE id = $1", [id]);
+    if (poResult.rows.length === 0) return error(res, "Purchase order not found", 404);
+
+    const po = poResult.rows[0];
+
+    // If the order was received and stock was incremented, restore it
+    if (po.status === 'Received' && po.product_id && po.quantity) {
+      await pool.query("UPDATE products SET stock_quantity = stock_quantity - $1 WHERE id = $2", [po.quantity, po.product_id]);
+    }
+
+    // Delete related inventory movements
+    await pool.query("DELETE FROM inventory_movements WHERE reference_type = 'PURCHASE_ORDER' AND reference_id::text = $1::text", [id]);
+    // Delete the purchase order
+    await pool.query("DELETE FROM purchase_orders WHERE id = $1", [id]);
     return success(res, "Purchase order deleted successfully");
   } catch (err: any) {
     return error(res, err.message, 500);
