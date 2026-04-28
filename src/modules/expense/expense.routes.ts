@@ -6,7 +6,6 @@ import {
   createExpense,
   getExpenses,
   getExpenseById,
-  getExpenseById,
   updateExpense,
   deleteExpense,
   approveExpense,

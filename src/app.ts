@@ -27,7 +27,7 @@ import dashboardRoutes from "./modules/dashboard/dashboard.routes";
 import inventoryRoutes from "./modules/inventory/inventory.routes";
 import leadRoutes from "./modules/leads/leads.routes";
 import quotationsRoutes from "./modules/quotations/quotations.routes";
-import uploadRoutes from "./modules/uploads/upload.routes";
+// import uploadRoutes from "./modules/uploads/upload.routes";
 import creditRequestRoutes from "./modules/creditRequests/creditRequest.routes";
 import purchaseOrdersRoutes from "./modules/inventory/purchase_orders.routes";
 import employeeRoutes from "./modules/employees/employees.routes";
@@ -104,7 +104,7 @@ app.use("/api/products", (req, res, next) => {
   next();
 }, inventoryRoutes);
 app.use("/api/leads", leadRoutes);
-app.use("/api/upload", uploadRoutes);
+// app.use("/api/upload", uploadRoutes);
 app.use("/api/credit-requests", creditRequestRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/marketing", marketingRoutes);
@@ -136,7 +136,7 @@ app.use((req, res, next) => {
 // ==============================
 // ERROR HANDLER
 // ==============================
-app.use((err: any, req: Request, res: Response, next: any) => {
+app.use((err: any, req: any, res: any, next: any) => {
   console.error("[ERROR]", err);
   res.status(err.status || 500).json({
     success: false,
