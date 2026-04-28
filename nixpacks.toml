@@ -1,0 +1,6 @@
+[build]
+installCommand = "npm install"
+buildCommand = "npx prisma generate"
+
+[start]
+command = "npx ts-node src/server.ts"
