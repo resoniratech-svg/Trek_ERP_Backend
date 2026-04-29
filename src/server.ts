@@ -8,10 +8,10 @@ import { pool } from "./config/db";
 // DB CONNECTION CHECK
 // ==============================
 pool.query("SELECT NOW()")
-  .then(async (res) => {
+  .then(async (res: any) => {
     console.log("DB Connected:", res.rows);
   })
-  .catch(err => console.error("DB Error:", err));
+  .catch((err: any) => console.error("DB Error:", err));
 
 // ==============================
 // SERVER START
