@@ -1,6 +1,6 @@
 [build]
 installCommand = "npm install"
-buildCommand = "npx prisma generate"
+buildCommand = "npm run build"
 
 [start]
-command = "npx ts-node src/server.ts"
+command = "npm start"
