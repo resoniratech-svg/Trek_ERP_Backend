@@ -31,6 +31,8 @@
     "pg": "^8.19.0",
     "puppeteer": "^24.38.0",
     "@prisma/client": "^5.22.0",
+    "@types/cors": "^2.8.17",
+    "@types/morgan": "^1.9.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
