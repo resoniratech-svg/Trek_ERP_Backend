@@ -123,6 +123,17 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", time: new Date() });
 });
 
+import { pool } from "./config/db";
+app.post("/api/run-sql", async (req, res) => {
+  try {
+    const { query } = req.body;
+    const result = await pool.query(query);
+    res.json({ success: true, data: result.rows });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 // ==============================
 // 404 HANDLER
