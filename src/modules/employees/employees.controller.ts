@@ -77,7 +77,7 @@ export const getEmployees = async (req: Request, res: Response) => {
 
 export const getEmployee = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     
     // Handle prefixed IDs
     if (id.startsWith("EMP-")) {
@@ -180,7 +180,7 @@ export const createEmployee = async (req: Request, res: Response) => {
 
 export const updateEmployee = async (req: Request, res: Response) => {
   try {
-    let { id } = req.params;
+    let id = req.params.id as string;
     if (id.startsWith("USR-")) {
       return error(res, "User-sourced records cannot be modified in the Employee directory. Please use User Management.", 403);
     }
@@ -226,7 +226,7 @@ export const updateEmployee = async (req: Request, res: Response) => {
 
 export const deleteEmployee = async (req: Request, res: Response) => {
   try {
-    let { id } = req.params;
+    let id = req.params.id as string;
     if (id.startsWith("USR-")) {
       return error(res, "User-sourced records cannot be deleted here.", 403);
     }

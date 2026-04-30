@@ -40,7 +40,7 @@ export const getAllCreditRequests = async (req: Request, res: Response) => {
 
 export const getCreditRequestById = async (req: Request, res: Response) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = parseInt(req.params.id as string);
         const result = await creditRequestService.getCreditRequestByIdService(id);
         if (!result) return res.status(404).json({ success: false, message: "Credit request not found" });
         res.status(200).json({ success: true, data: result });
@@ -51,7 +51,7 @@ export const getCreditRequestById = async (req: Request, res: Response) => {
 
 export const updateCreditRequest = async (req: Request, res: Response) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = parseInt(req.params.id as string);
         const result = await creditRequestService.updateCreditRequestService(id, req.body);
         if (!result) return res.status(404).json({ success: false, message: "Credit request not found or no changes made" });
         res.status(200).json({ success: true, data: result });
@@ -62,7 +62,7 @@ export const updateCreditRequest = async (req: Request, res: Response) => {
 
 export const deleteCreditRequest = async (req: Request, res: Response) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = parseInt(req.params.id as string);
         const result = await creditRequestService.deleteCreditRequestService(id);
         if (!result) return res.status(404).json({ success: false, message: "Credit request not found" });
         res.status(200).json({ success: true, message: "Credit request deleted successfully" });

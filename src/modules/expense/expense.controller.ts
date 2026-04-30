@@ -180,7 +180,7 @@ export const getExpenses = async (req: Request, res: Response) => {
 // ==============================
 export const getExpenseById = async (req: Request, res: Response) => {
   try {
-    const { expenseId } = req.params;
+    const expenseId = req.params.expenseId as string;
 
     const result = await pool.query(
       `SELECT e.*,
@@ -219,7 +219,7 @@ export const updateExpense = async (req: any, res: Response) => {
   const client = await pool.connect();
 
   try {
-    const { expenseId } = req.params;
+    const expenseId = req.params.expenseId as string;
     const {
       totalAmount,
       allocationType,
@@ -310,7 +310,7 @@ export const updateExpense = async (req: any, res: Response) => {
 export const deleteExpense = async (req: Request, res: Response) => {
   const client = await pool.connect();
   try {
-    const { expenseId } = req.params;
+    const expenseId = req.params.expenseId as string;
 
     await client.query("BEGIN");
 
@@ -474,7 +474,7 @@ export const approveExpense = async (req: any, res: Response) => {
     return error(res, "Only Super Admins can approve expenses", 403);
   }
 
-  const { expenseId } = req.params;
+  const expenseId = req.params.expenseId as string;
   const { allocations = [] } = req.body;
   const client = await pool.connect();
 
@@ -529,7 +529,7 @@ export const rejectExpense = async (req: any, res: Response) => {
     return error(res, "Only Super Admins can reject expenses", 403);
   }
 
-  const { expenseId } = req.params;
+  const expenseId = req.params.expenseId as string;
   try {
     await pool.query(`UPDATE internal_expenses SET approval_status = 'REJECTED' WHERE id = $1`, [expenseId]);
 
