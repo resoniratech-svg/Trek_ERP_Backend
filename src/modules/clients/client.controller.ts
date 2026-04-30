@@ -101,7 +101,7 @@ export const deleteClient = async (req: Request, res: Response) => {
     }
 
     // 🔒 ROLE CHECK
-    if (req.user?.role !== "SUPER_ADMIN") {
+    if ((req as any).user?.role !== "SUPER_ADMIN") {
       return res.status(403).json({
         success: false,
         message: "Only SUPER ADMIN can delete clients",
